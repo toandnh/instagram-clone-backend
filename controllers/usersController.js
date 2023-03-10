@@ -14,6 +14,20 @@ const getAllUsers = asyncHandler(async (req, res) => {
     res.json(users)
 })
 
+// @desc Search user matching regex.
+// @route GET /users/:query
+// @access Private
+const searchUser = asyncHandler(async (req, res) => {
+    const { query } = req.params
+
+    if (!query)
+        return res.status(400).json({ message: 'Query required!' })
+
+    const searchResults = await User.find({ username: { $regex: query, $options: 'i' } }).select('-password').lean()
+
+    res.json(searchResults)
+})
+
 // @desc Create new user
 // @route POST /users
 // @access Private
@@ -138,6 +152,7 @@ const deleteUser = asyncHandler(async (req, res) => {
 
 module.exports = {
     getAllUsers,
+    searchUser,
     createNewUser,
     updateUser,
     updateFollow,

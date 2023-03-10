@@ -11,6 +11,9 @@ router.route('/')
     .patch(usersController.updateUser)
     .delete(usersController.deleteUser)
 
+router.route('/:query')
+    .get(usersController.searchUser)
+
 router.route('/:id')
     .patch(usersController.updateFollow)
 
