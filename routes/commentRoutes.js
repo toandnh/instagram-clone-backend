@@ -5,13 +5,15 @@ const verifyJWT = require('../middleware/verifyJWT')
 
 router.use(verifyJWT)
 
-router.route('/')
-    .get(commentsController.getComments)
-    .post(commentsController.createNewComment)
-    .patch(commentsController.updateComment)
-    .delete(commentsController.deleteComment)
+router
+	.route('/') //
+	.get(commentsController.getComments)
+	.post(commentsController.createNewComment)
+	.patch(commentsController.updateComment)
+	.delete(commentsController.deleteComment)
 
-router.route('/:postId')
-    .get(commentsController.getCommentsByPostId)
+router
+	.route('/:postId') //
+	.get(commentsController.getCommentsByPostId)
 
 module.exports = router
