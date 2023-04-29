@@ -9,13 +9,18 @@ const asyncHandler = require('express-async-handler')
 const login = asyncHandler(async (req, res) => {
 	const { username, password } = req.body
 
-	if (!username || !password) return res.status(400).json({ message: 'All fields required!' })
+	if (!username || !password)
+		return res.status(400).json({ message: 'All fields required!' })
 
 	const foundUser = await User.findOne({ username }).exec()
-	if (!foundUser) return res.status(401).json({ message: 'Unauthorized!' })
+	if (!foundUser)
+		return res.status(401).json({ message: 'Unauthorized, user not found!' })
 
 	const match = await bcrypt.compare(password, foundUser.password)
-	if (!match) return res.status(401).json({ message: 'Unauthorized!' })
+	if (!match)
+		return res
+			.status(401)
+			.json({ message: 'Unauthorized, user and password does not match!' })
 
 	const accessToken = jwt.sign(
 		{
@@ -85,7 +90,8 @@ const refresh = (req, res) => {
 
 			const foundUser = await User.findById(decoded.user.id).exec()
 
-			if (!foundUser) return res.status(401).json({ message: 'Unauthorized user!' })
+			if (!foundUser)
+				return res.status(401).json({ message: 'Unauthorized user!' })
 
 			const accessToken = jwt.sign(
 				{
