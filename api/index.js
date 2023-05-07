@@ -36,10 +36,7 @@ app.use((req, res, next) => {
 	const origin = req.get('referer')
 	const isWhitelisted = whitelist.find((w) => origin && origin.includes(w))
 	if (isWhitelisted) {
-		res.setHeader(
-			'Access-Control-Allow-Origin',
-			'https://instagram-clone-frontend-toandnh.vercel.app/'
-		)
+		res.setHeader('Access-Control-Allow-Origin', '*')
 		res.setHeader(
 			'Access-Control-Allow-Methods',
 			'GET, POST, OPTIONS, PUT, PATCH, DELETE'
@@ -48,7 +45,7 @@ app.use((req, res, next) => {
 			'Access-Control-Allow-Headers',
 			'X-Requested-With,Content-Type,Authorization'
 		)
-		res.setHeader('Access-Control-Allow-Credentials', true)
+		res.setHeader('Access-Control-Allow-Credentials', false)
 	}
 	// Pass to next layer of middleware
 	if (req.method === 'OPTIONS') res.sendStatus(200)
