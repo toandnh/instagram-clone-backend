@@ -36,7 +36,10 @@ app.use((req, res, next) => {
 	const origin = req.get('referer')
 	const isWhitelisted = whitelist.find((w) => origin && origin.includes(w))
 	if (isWhitelisted) {
-		res.setHeader('Access-Control-Allow-Origin', '*')
+		res.setHeader(
+			'Access-Control-Allow-Origin',
+			'https://instagram-clone-frontend-toandnh.vercel.app'
+		)
 		res.setHeader(
 			'Access-Control-Allow-Methods',
 			'GET, POST, OPTIONS, PUT, PATCH, DELETE'
