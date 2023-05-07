@@ -7,6 +7,7 @@ const errorHandler = require('../middleware/errorHandler')
 const cookieParser = require('cookie-parser')
 const cors = require('cors')
 const corsOptions = require('../config/corsOptions')
+const allowedOrigins = require('../config/allowedOrigins')
 const connectDB = require('../config/dbConn')
 const mongoose = require('mongoose')
 const PORT = process.env.PORT || 3500
@@ -28,6 +29,26 @@ app.use('/users', require('./routes/userRoutes'))
 app.use('/posts', require('./routes/postRoutes'))
 app.use('/comments', require('./routes/commentRoutes'))
 app.use('/uploads', require('./routes/uploadRoutes'))
+
+app.use((req, res, next) => {
+	const origin = req.get('referer')
+	const isWhitelisted = allowedOrigins.find((w) => origin && origin.includes(w))
+	if (isWhitelisted) {
+		res.setHeader('Access-Control-Allow-Origin', '*')
+		res.setHeader(
+			'Access-Control-Allow-Methods',
+			'GET, POST, OPTIONS, PUT, PATCH, DELETE'
+		)
+		res.setHeader(
+			'Access-Control-Allow-Headers',
+			'X-Requested-With,Content-Type,Authorization'
+		)
+		res.setHeader('Access-Control-Allow-Credentials', true)
+	}
+	//pass to next layer of middleware.
+	if (req.method === 'OPTIONS') res.sendStatus(200)
+	else next()
+})
 
 app.all('*', (req, res) => {
 	res.status(404)
