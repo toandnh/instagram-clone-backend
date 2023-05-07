@@ -38,7 +38,7 @@ app.use((req, res, next) => {
 	if (isWhitelisted) {
 		res.setHeader(
 			'Access-Control-Allow-Origin',
-			'https://instagram-clone-frontend-toandnh.vercel.app'
+			'https://instagram-clone-frontend-toandnh.vercel.app/'
 		)
 		res.setHeader(
 			'Access-Control-Allow-Methods',
